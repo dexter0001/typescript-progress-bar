@@ -11,53 +11,49 @@ appDiv.innerHTML = `<div id="root-container">
 </button></br>
 </div>`;
 
+class Queue {
+  items: any[];
+  constructor(params: any[]) {
+    this.items = params;
+  }
+
+  enque(item: any) {
+    this.items.push(item);
+  }
+
+  dequeue() {
+    // return and move first element of the queue
+    return this.items.shift();
+  }
+
+  getItems() {
+    return this.items;
+  }
+}
+
 var rootDiv = document.getElementById('root-container');
 var btn = document.getElementById('btn');
 
+let items: any[] = [];
+let uploadQueue = new Queue(items);
+
 btn.addEventListener('click', function addProgressBar() {
   const bar = document.createElement('progress');
+  bar.style.setProperty('width', '100%');
   rootDiv.append(bar);
-
+  uploadQueue.enque(bar);
   // created line break element
   const linebreak = document.createElement('br');
   rootDiv.append(linebreak);
 
-  // var el = document.getElementById('bar');
-  setTimeout(() => {
-    bar.setAttribute('value', '50');
-  }, 1000);
-
-  setTimeout(() => {
-    bar.setAttribute('value', '100');
-  }, 10000);
+  for (let i = 0; i < uploadQueue.getItems().length; i++) {
+    do {
+      // console.log('Queue before:', uploadQueue.getItems().length);
+      setTimeout(() => {
+        bar.setAttribute('value', '100');
+      }, 2000);
+      uploadQueue.dequeue();
+      // console.log('Queue after:', uploadQueue.getItems().length);
+    } while (i != uploadQueue.getItems().length);
+  }
 });
-
-// btn?.addEventListener('click', function addProgressBar() {
-//   appDiv.innerHTML += `<progress id="file2" value="10" max="100">32%</progress>`;
-// });
-
-// addProgressBar() {
-
-//   this.rootDiv = document.getElementById('root-container');
-//   // create progress bar element
-//   const bar = document.createElement('progress');
-//   this.rootDiv.append(bar);
-//   this.fillTheBar(bar);
-
-//   // created line break element
-//   const linebreak = document.createElement("br");
-//   this.rootDiv.append(linebreak);
-
-// };
-
-// fillTheBar(el: any) {
-
-//   setTimeout(() => {
-//     el.setAttribute('value', '50');
-//   }, 1000);
-
-//   // setTimeout(() => {
-//   //   el.setAttribute('value', '100');
-//   // }, 10000);
-
-// }
